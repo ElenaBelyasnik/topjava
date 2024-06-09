@@ -1,8 +1,9 @@
 package ru.javawebinar.topjava.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class MealTo {
+public class MealTo implements Serializable {
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -18,6 +19,22 @@ public class MealTo {
         this.excess = excess;
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public boolean isExcess() {
+        return excess;
+    }
+
     @Override
     public String toString() {
         return "MealTo{" +
@@ -27,4 +44,6 @@ public class MealTo {
                 ", excess=" + excess +
                 '}';
     }
+
+
 }
