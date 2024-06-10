@@ -3,7 +3,7 @@ package ru.javawebinar.topjava.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class MealTo implements Serializable {
+public class MealTo {
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -44,6 +44,4 @@ public class MealTo implements Serializable {
                 ", excess=" + excess +
                 '}';
     }
-
-
 }
