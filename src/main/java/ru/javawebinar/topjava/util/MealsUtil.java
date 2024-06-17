@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -26,11 +27,10 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
     );
 
-
     public static void main(String[] args) {
 
 /*
-        List<MealTo> mealsTo = filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        List<MealTo> mealsTo = getFilterdListMealTo(meals, 2000, LocalTime.of(7, 0), LocalTime.of(12, 0));
         mealsTo.forEach(System.out::println);
 */
 
@@ -38,16 +38,16 @@ public class MealsUtil {
         mealsTo.forEach(System.out::println);
     }
 
-    public static List<MealTo> getListMealTo(List<Meal> meals, int caloriesPerDay) {
+    public static List<MealTo> getListMealTo(Collection<Meal> meals, int caloriesPerDay) {
         return filteredByStreams(meals, caloriesPerDay, m -> true);
     }
 
-    public static List<MealTo> getFilterdListMealTo(List<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
+    public static List<MealTo> getFilteredListMealTo(List<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
         return filteredByStreams(meals, caloriesPerDay,
                 meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
-    public static List<MealTo> filteredByStreams(List<Meal> meals, int caloriesPerDay, Predicate<Meal> expression) {
+    public static List<MealTo> filteredByStreams(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> expression) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
@@ -60,6 +60,6 @@ public class MealsUtil {
     }
 
     private static MealTo createTo(Meal meal, boolean excess) {
-        return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 }
