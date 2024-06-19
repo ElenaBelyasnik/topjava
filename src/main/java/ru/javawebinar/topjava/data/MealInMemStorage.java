@@ -13,7 +13,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealInMemStorage implements CrudMeal {
     private static final Logger log = getLogger(MealInMemStorage.class);
-    private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
+    //private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
     private final AtomicInteger mealCounter = new AtomicInteger(0);
 
     public MealInMemStorage() {

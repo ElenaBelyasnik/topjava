@@ -40,7 +40,8 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 log.info("Delete id = {}", strId);
                 if (!(strId == null)) {
-                    storage.delete(Integer.parseInt(strId));
+                    boolean result = storage.delete(Integer.parseInt(strId));
+                    log.info("Delete = " + result);
                 }
                 response.sendRedirect("meals");
                 break;
