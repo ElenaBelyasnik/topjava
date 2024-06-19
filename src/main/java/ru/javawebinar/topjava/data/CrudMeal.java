@@ -7,8 +7,6 @@ import java.util.Collection;
 public interface CrudMeal {
     Meal save(Meal meal);
 
-    //void update(Meal meal);
-
     Meal read(int id);
 
     boolean delete(int id);

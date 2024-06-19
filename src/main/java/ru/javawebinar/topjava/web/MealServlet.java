@@ -23,35 +23,23 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("forvard to meals");
+        log.debug("forward to meals");
         String action = request.getParameter("action");
-        log.info("action = " + action);
-
-        if (action == null) {
-            action = "all";
-        }
+        action = action == null ? "all" : action;
+        String strId = request.getParameter("id");
 
         switch (action) {
             case "create":
-                log.info(action);
-                Meal mealCreate = new Meal(LocalDateTime.now(), "", 500);
-                request.setAttribute("meal", mealCreate);
-                request.getRequestDispatcher("/meal.jsp").forward(request, response);
-                break;
-
             case "update":
                 log.info(action);
-                int id = Integer.parseInt(request.getParameter("id"));
-                Meal mealUpdate = storage.read(id);
-                request.setAttribute("meal", mealUpdate);
+                Meal meal = strId == null ? new Meal(null, LocalDateTime.now(), "", 500) :
+                        storage.read(Integer.parseInt(strId));
+                request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/meal.jsp").forward(request, response);
                 break;
-
             case "delete":
-                log.info(action);
-                String strId = request.getParameter("id");
                 log.info("Delete id = {}", strId);
-                if (!strId.isEmpty()) {
+                if (!(strId == null)) {
                     storage.delete(Integer.parseInt(strId));
                 }
                 response.sendRedirect("meals");
@@ -68,21 +56,10 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         log.info("doPost");
         String strId = request.getParameter("id");
-        log.info("strId = " + strId);
-        Meal meal;
-        if ("".equals(strId)) {
-            meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")));
-        } else {
-            meal = new Meal(Integer.parseInt(strId),
-                    LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")));
-
-        }
-        log.info(meal.getId() == null ? "Create {}" : "Update {}", meal);
-        storage.save(meal);
+        Meal meal = storage.save(new Meal(strId.isEmpty() ? null : Integer.parseInt(strId),
+                LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories"))));
         response.sendRedirect("meals");
     }
 }

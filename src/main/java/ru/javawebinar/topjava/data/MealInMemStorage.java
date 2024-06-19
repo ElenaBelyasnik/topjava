@@ -22,13 +22,17 @@ public class MealInMemStorage implements CrudMeal {
 
     @Override
     public Meal save(Meal meal) {
-        log.info("merge");
         Integer id = meal.getId();
+
         if (id == null) {
             meal.setId(mealCounter.incrementAndGet());
+            storage.put(meal.getId(), meal);
+            return meal;
+        } else if (storage.get(id) != null) {
+            storage.put(meal.getId(), meal);
+            return meal;
         }
-        storage.put(meal.getId(), meal);
-        return meal;
+        return null;
     }
 
     @Override
