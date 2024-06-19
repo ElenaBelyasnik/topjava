@@ -25,10 +25,11 @@
     <input type="number" id="calories" name="calories" value="${meal.calories}" required><br><br>
 
     <button type="submit">Сохранить</button>
-    <button onclick="cancelChanges()">Отменить</button>
+    <button type="button" onclick="cancelChanges()">Отменить</button>
     <script>
         function cancelChanges() {
             if (confirm('Вы уверены, что хотите отменить изменения?')) {
+
                 window.history.back();
             }
         }

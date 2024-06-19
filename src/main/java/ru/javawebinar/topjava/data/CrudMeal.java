@@ -4,8 +4,8 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.util.Collection;
 
-public interface Crud {
-    Meal merge(Meal meal);
+public interface CrudMeal {
+    Meal save(Meal meal);
 
     //void update(Meal meal);
 

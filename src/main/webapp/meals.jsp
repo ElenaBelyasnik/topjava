@@ -32,7 +32,6 @@
 <h2>Meals</h2>
 <a href="meals?action=create">Create <img src="img/add.png"></a>
 <hr/>
-<hr/>
 <table>
     <thead>
     <tr>
