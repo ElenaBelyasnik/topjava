@@ -11,12 +11,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class MealInMemStorage implements CrudMeal {
-    private static final Logger log = getLogger(MealInMemStorage.class);
-    //private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
+public class InMemMealStorage implements MealCrud {
+    private static final Logger log = getLogger(InMemMealStorage.class);
+    private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
     private final AtomicInteger mealCounter = new AtomicInteger(0);
 
-    public MealInMemStorage() {
+    public InMemMealStorage() {
         MealsUtil.meals.forEach(this::save);
     }
 
@@ -28,11 +28,8 @@ public class MealInMemStorage implements CrudMeal {
             meal.setId(mealCounter.incrementAndGet());
             storage.put(meal.getId(), meal);
             return meal;
-        } else if (storage.get(id) != null) {
-            storage.put(meal.getId(), meal);
-            return meal;
         }
-        return null;
+        return storage.computeIfPresent(id, (key, val) -> meal);
     }
 
     @Override

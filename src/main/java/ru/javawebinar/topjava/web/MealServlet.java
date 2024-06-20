@@ -1,7 +1,8 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.data.MealInMemStorage;
+import ru.javawebinar.topjava.data.InMemMealStorage;
+import ru.javawebinar.topjava.data.MealCrud;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.MealsUtil;
 
@@ -14,16 +15,16 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
-    private MealInMemStorage storage;
+    private MealCrud storage;
 
     @Override
     public void init() {
-        storage = new MealInMemStorage();
+        storage = new InMemMealStorage();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("forward to meals");
+        log.debug("doGet: create or update or delete or all");
         String action = request.getParameter("action");
         action = action == null ? "all" : action;
         String strId = request.getParameter("id");

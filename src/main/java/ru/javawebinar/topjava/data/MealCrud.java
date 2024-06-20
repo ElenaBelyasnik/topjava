@@ -6,8 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public interface CrudMeal {
-    Map<Integer, Meal> storage = new ConcurrentHashMap<>();
+public interface MealCrud {
 
     Meal save(Meal meal);
 

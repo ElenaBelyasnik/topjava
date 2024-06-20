@@ -41,8 +41,6 @@ public class Meal {
         return calories;
     }
 
-
-
     public LocalDate getDate() {
         return dateTime.toLocalDate();
     }
