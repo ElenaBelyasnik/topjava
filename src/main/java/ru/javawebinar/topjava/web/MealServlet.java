@@ -10,7 +10,11 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
+import static javax.xml.datatype.DatatypeConstants.MINUTES;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
@@ -33,7 +37,9 @@ public class MealServlet extends HttpServlet {
             case "create":
             case "update":
                 log.info(action);
-                Meal meal = strId == null ? new Meal(null, LocalDateTime.now(), "", 500) :
+                Meal meal = strId == null ? new Meal(null,
+                        LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+                        , "", 500) :
                         storage.read(Integer.parseInt(strId));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/meal.jsp").forward(request, response);
