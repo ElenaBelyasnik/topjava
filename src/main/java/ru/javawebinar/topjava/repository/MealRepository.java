@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Component
+
 public interface MealRepository {
     // null if updated meal does not belong to userId
     Meal save(Meal meal, int userId);

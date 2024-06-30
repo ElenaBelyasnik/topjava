@@ -1,24 +1,31 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
+import org.springframework.stereotype.Component;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.Month;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.ADMIN_ID;
+
+@Component
 public class InMemoryMealRepository implements MealRepository {
     private final Map<Integer, Map<Integer, Meal>> userMealRepo = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
         MealsUtil.meals.forEach(meal -> save(meal, InMemoryUserRepository.USER_ID));
+        save(new Meal(LocalDateTime.of(2024, Month.JUNE, 1, 14, 0), "Админский ланч", 510), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2024, Month.JUNE, 1, 21, 0), "Админский ужин", 1500), ADMIN_ID);
+
     }
 
     @Override
@@ -35,14 +42,24 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        Map<Integer, Meal> meals = getUserMealList(userId);
-        return !meals.isEmpty() && meals.remove(id) != null;
+        Map<Integer, Meal> meals = getUserMeal(userId);
+        try {
+            Meal deletedMeal = meals.remove(id);
+            return deletedMeal != null;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        //return !meals.isEmpty() && meals.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        Map<Integer, Meal> meals = getUserMealList(userId);
-        return meals.isEmpty() ? null : meals.get(id);
+        Map<Integer, Meal> meals = getUserMeal(userId);
+        try {
+            return meals.get(id);
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     @Override
@@ -59,15 +76,19 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     public List<Meal> getFilteredMealList(int userId, Predicate<Meal> filter) {
-        Map<Integer, Meal> meals = getUserMealList(userId);
-        return meals.isEmpty() ? Collections.emptyList() :
-                meals.values().stream()
-                        .filter(filter)
-                        .sorted(Comparator.comparing(Meal::getDateTime).reversed())
-                        .collect(Collectors.toList());
+        try {
+            Map<Integer, Meal> meals = getUserMeal(userId);
+            return meals.isEmpty() ? Collections.emptyList() :
+                    meals.values().stream()
+                            .filter(filter)
+                            .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                            .collect(Collectors.toList());
+        } catch (NullPointerException e) {
+            return Collections.emptyList();
+        }
     }
 
-    private Map<Integer, Meal> getUserMealList(int userId) {
+    private Map<Integer, Meal> getUserMeal(int userId) {
         return userMealRepo.get(userId);
     }
 }

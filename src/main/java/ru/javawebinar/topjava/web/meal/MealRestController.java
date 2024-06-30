@@ -19,7 +19,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
 public class MealRestController {
-    private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
+    private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
 
     private final MealService service;
 
@@ -52,10 +52,13 @@ public class MealRestController {
         return service.create(meal, userId);
     }
 
-    public void update(Meal meal) {
+    public void update(int id) {
         int userId = SecurityUtil.authUserId();
-        log.info("update {} for user {}", meal, userId);
-        service.update(meal, userId);
+        Meal meal = service.get(id, userId);
+        if (meal != null) {
+            log.info("update {} for user {}", meal, userId);
+            service.update(meal, userId);
+        }
     }
 
     public List<MealTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
