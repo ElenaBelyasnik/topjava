@@ -25,11 +25,14 @@ public class SpringMain {
             System.out.println();
 
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
+
             List<MealTo> filteredMealsWithExcess = mealRestController.getBetween(
                     LocalDate.of(2020, Month.JANUARY, 30), LocalTime.of(7, 0),
                     LocalDate.of(2020, Month.JANUARY, 31), LocalTime.of(11, 0));
+            System.out.println("begin1");
             filteredMealsWithExcess.forEach(System.out::println);
-            System.out.println();
+            System.out.println("end1");
+            System.out.println("========================== all meals");
             System.out.println(mealRestController.getBetween(null, null, null, null));
         }
     }

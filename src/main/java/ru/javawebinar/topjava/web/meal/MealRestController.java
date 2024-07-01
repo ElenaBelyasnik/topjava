@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
@@ -52,13 +53,11 @@ public class MealRestController {
         return service.create(meal, userId);
     }
 
-    public void update(int id) {
+    public void update(Meal meal, int id) {
         int userId = SecurityUtil.authUserId();
-        Meal meal = service.get(id, userId);
-        if (meal != null) {
-            log.info("update {} for user {}", meal, userId);
-            service.update(meal, userId);
-        }
+        assureIdConsistent(meal, id);
+        log.info("update {} for user {}", meal, userId);
+        service.update(meal, userId);
     }
 
     public List<MealTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,

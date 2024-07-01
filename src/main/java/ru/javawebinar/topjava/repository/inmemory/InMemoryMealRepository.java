@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
@@ -23,8 +24,8 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(meal -> save(meal, InMemoryUserRepository.USER_ID));
-        save(new Meal(LocalDateTime.of(2024, Month.JUNE, 1, 14, 0), "Админский ланч", 510), ADMIN_ID);
-        save(new Meal(LocalDateTime.of(2024, Month.JUNE, 1, 21, 0), "Админский ужин", 1500), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 9, 0), "Админский ланч", 510), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 10, 0), "Админский ужин", 1500), ADMIN_ID);
 
     }
 
@@ -42,24 +43,14 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        Map<Integer, Meal> meals = getUserMeal(userId);
-        try {
-            Meal deletedMeal = meals.remove(id);
-            return deletedMeal != null;
-        } catch (NullPointerException e) {
-            return false;
-        }
-        //return !meals.isEmpty() && meals.remove(id) != null;
+        Map<Integer, Meal> meals = getUserMeals(userId);
+        return meals != null && meals.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        Map<Integer, Meal> meals = getUserMeal(userId);
-        try {
-            return meals.get(id);
-        } catch (NullPointerException e) {
-            return null;
-        }
+        Map<Integer, Meal> meals = getUserMeals(userId);
+        return meals != null ? meals.get(id) : null;
     }
 
     @Override
@@ -68,27 +59,23 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> isBetweenDates(LocalDateTime mealStartTime, LocalDateTime mealEndTime, int userId) {
-        return getFilteredMealList(userId, meal -> DateTimeUtil.isBetweenHalfOpen(
-                meal.getDateTime().toLocalTime(),
-                mealStartTime.toLocalTime(),
-                mealEndTime.toLocalTime()));
+    public List<Meal> isBetweenDates(LocalDateTime mealStartDateTime, LocalDateTime mealEndDateTime, int userId) {
+        return getFilteredMealList(userId, meal -> DateTimeUtil.isBetweenDates(
+                meal.getDate(),
+                mealStartDateTime.toLocalDate(),
+                mealEndDateTime.toLocalDate()));
     }
 
     public List<Meal> getFilteredMealList(int userId, Predicate<Meal> filter) {
-        try {
-            Map<Integer, Meal> meals = getUserMeal(userId);
+        Map<Integer, Meal> meals = getUserMeals(userId);
             return meals.isEmpty() ? Collections.emptyList() :
                     meals.values().stream()
                             .filter(filter)
-                            .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                            //.sorted(Comparator.comparing(Meal::getDateTime).reversed())
                             .collect(Collectors.toList());
-        } catch (NullPointerException e) {
-            return Collections.emptyList();
-        }
     }
 
-    private Map<Integer, Meal> getUserMeal(int userId) {
+    private Map<Integer, Meal> getUserMeals(int userId) {
         return userMealRepo.get(userId);
     }
 }
