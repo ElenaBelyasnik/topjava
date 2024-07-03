@@ -1,4 +1,6 @@
 <html lang="ru">
+<!--https://www.baeldung.com/tomcat-utf-8-->
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
 <head>
     <meta charset="UTF-8">
     <title>Java Enterprise (Topjava)</title>
@@ -7,9 +9,13 @@
 <h3>Проект <a href="https://github.com/JavaWebinar/topjava" target="_blank">Java Enterprise
     (Topjava)</a></h3>
 <hr>
-<ul style="font-size: large">
-    <li><a href="users">Users</a></li>
-    <li><a href="meals">Meals</a></li>
-</ul>
+<form action="users" method="post">
+    <b style="font-size: large">Meals of&nbsp;</b>
+    <select name="userId">
+        <option value="1">User</option>
+        <option value="2">Admin</option>
+    </select>
+    <button type="submit">Select</button>
+</form>
 </body>
 </html>

@@ -1,0 +1,20 @@
+table {
+    border-collapse: collapse; /* Collapse table border style */
+}
+
+th, td {
+    border: 1px solid black; /* Borders for cells */
+    padding: 8px; /* Indentation inside cells */
+}
+
+input {
+    margin-right: 50px;
+}
+
+.excess {
+    background-color: #ffcccc; /* background color for lines where meal.excess == true */
+}
+
+.normal {
+    background-color: #ccffcc; /* Background color for lines where meal.excess == false */
+}
