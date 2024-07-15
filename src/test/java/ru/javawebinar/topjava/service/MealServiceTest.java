@@ -24,7 +24,6 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
-    public static final int NOT_FOUND_MEAL_ID = 10;
 
     static {
         SLF4JBridgeHandler.install();
