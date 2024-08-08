@@ -11,9 +11,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NamedQueries({
-        @NamedQuery(name = Meal.ALL_SORTED, query = "select m from Meal m where m.user.id = :userId order by m.dateTime desc"),
-        @NamedQuery(name = Meal.DELETE, query = "delete from Meal m where m.id = :id and m.user.id = :userId"),
-        @NamedQuery(name = Meal.GET_BETWEEN, query = "select m from Meal m where m.user.id = :userId and m.dateTime >= :startDateTime and m.dateTime < :endDateTime order by m.dateTime desc")
+        @NamedQuery(name = Meal.ALL_SORTED, query = "select m from Meal m " +
+                "where m.user.id = :userId " +
+                "order by m.dateTime desc"),
+        @NamedQuery(name = Meal.DELETE, query = "delete from Meal m " +
+                "where m.id = :id and m.user.id = :userId"),
+        @NamedQuery(name = Meal.GET_BETWEEN, query = "select m from Meal m " +
+                "where m.user.id = :userId and m.dateTime >= :startDateTime " +
+                "and m.dateTime < :endDateTime order by m.dateTime desc")
 })
 @Entity
 @Table(name = "meal", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meal_unique_user_datetime_idx")})
