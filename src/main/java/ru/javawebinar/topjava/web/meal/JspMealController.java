@@ -24,19 +24,19 @@ public class JspMealController extends AbstractMealController {
     @GetMapping("/delete")
     public String delete(HttpServletRequest request) {
         super.delete(getId(request));
-        return "redirect:meals";
+        return "redirect:/meals";
     }
 
     @GetMapping("/update")
     public String update(HttpServletRequest request, Model model) {
         model.addAttribute("meal", super.get(getId(request)));
-        return "mealForm";
+        return "/mealForm";
     }
 
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
-        return "mealForm";
+        return "/mealForm";
     }
 
     @PostMapping
@@ -51,8 +51,7 @@ public class JspMealController extends AbstractMealController {
         } else {
             super.update(meal, getId(request));
         }
-
-        return "redirect:meals";
+        return "redirect:/meals";
     }
 
     @GetMapping("/filter")
