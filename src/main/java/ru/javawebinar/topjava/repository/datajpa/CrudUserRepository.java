@@ -16,12 +16,9 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Query("DELETE FROM User u WHERE u.id=:id")
     int delete(@Param("id") int id);
 
-    @QueryHints({
-            @QueryHint(name = HINT_PASS_DISTINCT_THROUGH, value = "false")
-    })
     User getByEmail(String email);
 
-    @EntityGraph(attributePaths = {"meals", "roles"})
+    @EntityGraph(attributePaths = {"meals"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT u FROM User u WHERE u.id=?1")
     User getWithMeals(int id);
 }
