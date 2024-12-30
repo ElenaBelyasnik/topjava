@@ -18,7 +18,7 @@ function add() {
 }
 
 function deleteRow(id) {
-    if (confirm('A you sure?')) {
+    if (confirm('Are you sure?')) {
         $.ajax({
             url: ctx.ajaxUrl + id,
             type: "DELETE"
@@ -27,6 +27,10 @@ function deleteRow(id) {
             successNoty("Deleted");
         });
     }
+}
+
+function updateTableByData(data) {
+    ctx.datatableApi.clear().rows.add(data).draw();
 }
 
 function save() {
@@ -40,11 +44,6 @@ function save() {
         successNoty("Saved");
     });
 }
-
-function updateTableByData(data) {
-    ctx.datatableApi.clear().rows.add(data).draw();
-}
-
 
 let failedNote;
 

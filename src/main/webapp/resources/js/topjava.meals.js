@@ -1,20 +1,21 @@
 const mealAjaxUrl = "profile/meals/";
 
 const ctx = {
-  ajaxUrl: mealAjaxUrl,
-  updateTable: function () {
-      $.ajax({
-          type: "GET",
-          url: mealAjaxUrl + "filter",
-          data: $("#filter").serialize()
-      }).done(updateTableByData);
-  }
+    ajaxUrl: mealAjaxUrl,
+    updateTable: function () {
+        $.ajax({
+            type: "GET",
+            url: mealAjaxUrl + "filter",
+            data: $("#filter").serialize()
+        }).done(updateTableByData);
+    }
 };
 
 $(function () {
     makeEditable(
         $("#datatable").DataTable({
             "paging": false,
+            "info": true,
             "columns": [
                 {
                     "data": "dateTime"
@@ -32,7 +33,7 @@ $(function () {
                 {
                     "defaultContent": "Delete",
                     "orderable": false
-                },
+                }
             ],
             "order": [
                 [
