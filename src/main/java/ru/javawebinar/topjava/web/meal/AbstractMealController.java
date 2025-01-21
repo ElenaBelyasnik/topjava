@@ -15,7 +15,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkIsNew;
 
 public abstract class AbstractMealController {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -44,7 +44,7 @@ public abstract class AbstractMealController {
     public Meal create(Meal meal) {
         int userId = SecurityUtil.authUserId();
         log.info("create {} for user {}", meal, userId);
-        checkNew(meal);
+        checkIsNew(meal);
         return service.create(meal, userId);
     }
 

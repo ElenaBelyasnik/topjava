@@ -7,11 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.to.UserTo;
+import ru.javawebinar.topjava.util.UsersUtil;
 
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class UserService {
@@ -30,11 +31,11 @@ public class UserService {
 
     @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFound(repository.delete(id), id);
     }
 
     public User get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFound(repository.get(id), id);
     }
 
     public User getByEmail(String email) {
@@ -50,7 +51,17 @@ public class UserService {
     @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(repository.save(user), user.id());
+//      checkNotFound :  check works only for JDBC, disabled
+        repository.save(user);
+    }
+
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    public void update(UserTo userTo) {
+        User user = get(userTo.id());
+        User updatedUser = UsersUtil.updateFromTo(user, userTo);
+        repository.save(updatedUser);   // !! need only for JDBC implementation
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -62,6 +73,6 @@ public class UserService {
     }
 
     public User getWithMeals(int id) {
-        return checkNotFoundWithId(repository.getWithMeals(id), id);
+        return checkNotFound(repository.getWithMeals(id), id);
     }
 }

@@ -11,7 +11,7 @@ import ru.javawebinar.topjava.util.UsersUtil;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkIsNew;
 
 public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -30,12 +30,14 @@ public abstract class AbstractUserController {
     }
 
     public void create(UserTo userTo) {
-        create(UsersUtil.createNewFromTo(userTo));
+        log.info("create {}", userTo);
+        checkIsNew(userTo);
+        service.create(UsersUtil.createNewFromTo(userTo));
     }
 
     public User create(User user) {
         log.info("create {}", user);
-        checkNew(user);
+        checkIsNew(user);
         return service.create(user);
     }
 
@@ -48,6 +50,12 @@ public abstract class AbstractUserController {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);
+    }
+
+    public void update(UserTo userTo, int id) {
+        log.info("update {} with id={}", userTo, id);
+        assureIdConsistent(userTo, id);
+        service.update(userTo);
     }
 
     public User getByMail(String email) {
