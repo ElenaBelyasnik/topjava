@@ -7,11 +7,11 @@
     <title><spring:message code="app.title"/></title>
     <base href="${pageContext.request.contextPath}/"/>
 
-    <link rel="stylesheet" href="resources/css/style.css?v=2">
+    <link rel="stylesheet" href="../../../resources/css/style.css?v=2">
     <link rel="stylesheet" href="webjars/bootstrap/4.6.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="webjars/noty/3.1.4/demo/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="webjars/datatables/1.13.5/css/dataTables.bootstrap4.min.css">
-    <link rel="shortcut icon" href="resources/images/icon-meal.png">
+    <link rel="shortcut icon" href="../../../resources/images/icon-meal.png">
 
     <%--http://stackoverflow.com/a/24070373/548473--%>
     <script src="webjars/jquery/3.7.1/jquery.min.js" defer></script>
