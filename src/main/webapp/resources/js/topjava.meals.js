@@ -23,8 +23,8 @@ $(function () {
             {
                 "data": "dateTime",
                 "render": function (date, type, row) {
-                    if (type === "display") {
-                        return date.replace('T', ' ').substring(0, 16);
+                    if (type === 'display') {
+                        return date.replace('T', ' ').substr(0, 16);
                     }
                     return date;
                 }
@@ -36,11 +36,13 @@ $(function () {
                 "data": "calories"
             },
             {
-                "defaultContent": "Edit",
+                "render": renderEditBtn,
+                "defaultContent": "",
                 "orderable": false
             },
             {
-                "defaultContent": "Delete",
+                "render": renderDeleteBtn,
+                "defaultContent": "",
                 "orderable": false
             }
         ],
