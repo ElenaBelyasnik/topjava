@@ -5,7 +5,7 @@ function makeEditable(datatable) {
         {
             ...datatable,
             "ajax": {
-                "url":ctx.ajaxUrl,
+                "url": ctx.ajaxUrl,
                 "dataSrc": ""
             },
             "paging": false,
@@ -33,10 +33,16 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(value);
+            form.find("input[name='" + key + "']").val(
+                key === "dateTime" ? formatDate(value) : value
+            );
         });
         $('#editRow').modal();
     });
+}
+
+function formatDate(date) {
+    return date.replace('T', ' ').substring(0, 16);
 }
 
 function deleteRow(id) {
