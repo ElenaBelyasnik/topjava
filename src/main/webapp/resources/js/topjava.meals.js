@@ -57,13 +57,13 @@ $(function () {
         }
     });
 
-    //  http://xdsoft.net/jqplugins/datetimepicker/
+//  http://xdsoft.net/jqplugins/datetimepicker/
     var startDate = $('#startDate');
     var endDate = $('#endDate');
     const dateOptions = {
         timepicker: false,
         format: 'Y-m-d',
-        formatDate: 'Y-m-d'
+        formatDate: 'Y-m-d',
     };
     startDate.datetimepicker({
         ...dateOptions,
@@ -106,5 +106,4 @@ $(function () {
     $('#dateTime').datetimepicker({
         format: 'Y-m-d H:i'
     });
-
 });

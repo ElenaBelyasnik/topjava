@@ -1,9 +1,9 @@
 let form;
 
-function makeEditable(datatable) {
+function makeEditable(datatableOpts) {
     ctx.datatableApi = $("#datatable").DataTable(
         {
-            ...datatable,
+            ...datatableOpts, // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Spread_syntax
             "ajax": {
                 "url": ctx.ajaxUrl,
                 "dataSrc": ""
@@ -42,7 +42,7 @@ function updateRow(id) {
 }
 
 function formatDate(date) {
-    return date.replace('T', ' ').substring(0, 16);
+    return date.replace('T', ' ').substr(0, 16);
 }
 
 function deleteRow(id) {
